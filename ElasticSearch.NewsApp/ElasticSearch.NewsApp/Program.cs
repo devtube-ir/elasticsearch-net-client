@@ -1,4 +1,6 @@
 
+using Serilog;
+
 namespace ElasticSearch.NewsApp
 {
    public class Program
@@ -13,6 +15,14 @@ namespace ElasticSearch.NewsApp
          // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
          builder.Services.AddEndpointsApiExplorer();
          builder.Services.AddSwaggerGen();
+
+         Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Console()
+            .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+         builder.Host.UseSerilog();
 
          var app = builder.Build();
 
